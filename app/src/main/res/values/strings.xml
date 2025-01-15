@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">crypto_app</string>
+    <string name="fileprovider">com.example.crypto_app.fileprovider</string>
+</resources>
