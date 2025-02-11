@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.crypto_app.domain.model.chat.ChatChannel
-import com.example.crypto_app.domain.model.profile.ChatUser
+import com.example.crypto_app.domain.model.profile.User
 import com.example.crypto_app.domain.usecases.chat.ChatUseCases
 import com.example.crypto_app.util.DateUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
-    private var allUsersList by mutableStateOf(emptyList<ChatUser>())
+    private var allUsersList by mutableStateOf(emptyList<User>())
 
     init {
         getAllUsers()
@@ -52,29 +52,29 @@ class SearchViewModel @Inject constructor(
     private fun getAllUsers() {
         isLoading = true
         viewModelScope.launch {
-            allUsersList = chatUseCases.getAllUsers()
+//            allUsersList = chatUseCases.getAllUsers()
             state = state.copy(userList = allUsersList)
             isLoading = false
         }
     }
 
-    fun updateAddedChatUsersList(user: ChatUser) {
+    fun updateAddedChatUsersList(user: User) {
         val addedToChatUsersList =
-            if (state.addedToChatUsersList.contains(user)) state.addedToChatUsersList.filter { it != user }
-            else state.addedToChatUsersList + user
+            if (state.addedToUsersList.contains(user)) state.addedToUsersList.filter { it != user }
+            else state.addedToUsersList + user
 
-        state = state.copy(addedToChatUsersList = addedToChatUsersList)
+        state = state.copy(addedToUsersList = addedToChatUsersList)
     }
 
-    fun isUserAddedToChat(user: ChatUser): Boolean {
-        return state.addedToChatUsersList.contains(user)
+    fun isUserAddedToChat(user: User): Boolean {
+        return state.addedToUsersList.contains(user)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addNewChatChannel() {
         if(currentUser == null) return
         isLoading = true
-        val currentPickedIdUsersToChat = state.addedToChatUsersList.map { it.id }
+        val currentPickedIdUsersToChat = state.addedToUsersList.map { it.id }
         val now = DateUtil.getLocalDateTimeNowToMilliseconds()
         val id = UUID.randomUUID().toString()
         val newChatChannel = ChatChannel(
@@ -87,7 +87,7 @@ class SearchViewModel @Inject constructor(
         )
         viewModelScope.launch {
             chatUseCases.addNewChatChannel(newChatChannel)
-            state = state.copy(addedToChatUsersList = emptyList())
+            state = state.copy(addedToUsersList = emptyList())
             isLoading = false
         }
 

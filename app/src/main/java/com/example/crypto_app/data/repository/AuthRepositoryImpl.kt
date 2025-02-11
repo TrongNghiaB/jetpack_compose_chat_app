@@ -1,11 +1,10 @@
 package com.example.crypto_app.data.repository
 
-import com.example.crypto_app.domain.model.profile.ChatUser
+import com.example.crypto_app.domain.model.profile.User
 import com.example.crypto_app.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class AuthRepositoryImpl() : AuthRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -24,7 +23,7 @@ class AuthRepositoryImpl() : AuthRepository {
         return try {
             val res = auth.createUserWithEmailAndPassword(email, password).await()
 
-            val newUser= ChatUser(
+            val newUser= User(
                 id = res.user!!.uid,
                 email = email,
                 name = "username",
@@ -38,7 +37,7 @@ class AuthRepositoryImpl() : AuthRepository {
         }
     }
 
-    override suspend fun addUserToFireStore(user: ChatUser): Result<Unit> {
+    override suspend fun addUserToFireStore(user: User): Result<Unit> {
         return try {
            usersFireStore
                 .document(user.id)

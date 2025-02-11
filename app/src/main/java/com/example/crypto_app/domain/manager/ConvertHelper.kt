@@ -4,12 +4,12 @@ import com.example.crypto_app.domain.model.chat.Attachment
 import com.example.crypto_app.domain.model.chat.ChatChannel
 import com.example.crypto_app.domain.model.chat.Mention
 import com.example.crypto_app.domain.model.chat.Message
-import com.example.crypto_app.domain.model.profile.ChatUser
+import com.example.crypto_app.domain.model.profile.User
 import com.google.firebase.firestore.DocumentSnapshot
 import java.util.concurrent.TimeUnit
 
-fun Map<String, Any>.toChatUser(): ChatUser {
-    return ChatUser(
+fun Map<String, Any>.toChatUser(): User {
+    return User(
         id = this["id"] as String,
         email = this["email"] as String,
         name = this["name"] as String,

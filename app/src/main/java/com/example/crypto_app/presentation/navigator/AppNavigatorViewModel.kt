@@ -89,10 +89,6 @@ class AppNavigatorViewModel @Inject constructor(private val authUseCases: AuthUs
         )
     }
 
-    fun navigateToTransaction(navController: NavHostController) {
-        navController.navigate(route = Route.TransactionScreen.route)
-    }
-
     fun navigateToTab(navController: NavHostController, route: String) {
         navController.navigate(route) {
             navController.graph.startDestinationRoute?.let { homeScreen ->
@@ -105,5 +101,4 @@ class AppNavigatorViewModel @Inject constructor(private val authUseCases: AuthUs
             }
         }
     }
-
 }

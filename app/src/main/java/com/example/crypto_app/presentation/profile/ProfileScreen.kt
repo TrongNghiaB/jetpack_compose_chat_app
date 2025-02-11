@@ -1,6 +1,5 @@
 package com.example.crypto_app.presentation.profile
 
-import CommonTextButton
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +29,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,15 +39,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.crypto_app.R
-import com.example.crypto_app.domain.model.profile.UserCoin
 import com.example.crypto_app.presentation.authentication.AuthViewModel
 import com.example.crypto_app.presentation.authentication.common_auth.CommonAuthTextField
 import com.example.crypto_app.presentation.commons.ImagePicker
@@ -74,10 +68,7 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
     profileViewModel: ProfileViewModel,
-    navigateToTransaction: () -> Unit
 ) {
-    val portfolioCoins = remember { profileViewModel.portfolioCoins }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -101,23 +92,11 @@ fun ProfileScreen(
 
         Text(text = "Total Balance", color = Color.LightGray, fontSize = FontSize15)
         Spacer(modifier = modifier.height(Padding5))
-        Text(
-            text = "${profileViewModel.user?.totalBalance ?: 0.0}",
-            color = Color.White,
-            fontSize = FontSize20
-        )
 
         HorizontalDivider(modifier = modifier.padding(vertical = Padding10), color = Color.Gray)
 
 
         Text(text = "Your Portfolio", color = Color.LightGray, fontSize = FontSize15)
-
-        for (coin in portfolioCoins) {
-            PortfolioItem(
-                coin = coin,
-                navigateToTransaction = navigateToTransaction,
-                profileViewModel = profileViewModel)
-        }
     }
 }
 
@@ -176,7 +155,6 @@ fun EditProfilePopup(modifier: Modifier = Modifier, profileViewModel: ProfileVie
                         modifier = modifier.width(Padding100),
                         colors = ButtonDefaults.buttonColors(ButtonColor),
                         onClick = {
-                            profileViewModel.updateUserInformation()
                             profileViewModel.editProfilePopUpState(false)
                         }) {
                         Text("Save")
@@ -194,77 +172,6 @@ fun EditProfilePopup(modifier: Modifier = Modifier, profileViewModel: ProfileVie
             }
         }
     }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun PortfolioItem(
-    modifier: Modifier = Modifier,
-    coin: UserCoin,
-    profileViewModel: ProfileViewModel,
-    navigateToTransaction: () -> Unit,
-) {
-    Row(
-        modifier = modifier
-            .height(Padding100)
-            .clickable {
-//                        navigateToDetails(coin.id)
-            }
-            .padding(Padding10),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AsyncImage(
-            model = coin.image,
-            contentDescription = "coin image",
-            error = painterResource(id = R.drawable.ic_error),
-            placeholder = painterResource(id = R.drawable.ic_currency_bitcoin),
-            modifier = Modifier.size(Padding24),
-        )
-        Spacer(modifier = Modifier.width(Padding10))
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            CommonUserCoinText(text = coin.symbol.uppercase())
-            CommonUserCoinText(text = coin.name)
-            CommonUserCoinText(text = "Average buy cost")
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight(),
-            horizontalAlignment = Alignment.End
-        ) {
-            CommonTextButton(
-                modifier = Modifier.size(Padding30),
-                text = "+",
-                color = Color.White,
-                buttonColor = Color.DarkGray
-            ) {
-                profileViewModel.setCoinTransaction(coin)
-                navigateToTransaction()
-            }
-            Spacer(modifier = modifier.weight(1f))
-            CommonUserCoinText(text = "${coin.averageBuyCost}")
-        }
-    }
-}
-
-@Composable
-fun CommonUserCoinText(
-    modifier: Modifier = Modifier, text: String, isSystemInDarkMode: Boolean = true
-) {
-    Text(
-        text = text,
-        fontSize = FontSize15,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        color = if (isSystemInDarkMode) Color.LightGray else Color.DarkGray
-    )
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

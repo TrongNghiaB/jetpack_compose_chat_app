@@ -1,30 +1,21 @@
 package com.example.crypto_app.presentation.authentication
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.crypto_app.domain.model.profile.ChatUser
-import com.example.crypto_app.domain.model.profile.User
 import com.example.crypto_app.domain.model.share_pref.RememberMe
 import com.example.crypto_app.domain.usecases.auth.AuthUseCases
-import com.example.crypto_app.domain.usecases.coins.CoinsUseCases
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases,
-    private val coinUseCases: CoinsUseCases) : ViewModel() {
+class AuthViewModel @Inject constructor(private val authUseCases: AuthUseCases) : ViewModel() {
     val currentUser = FirebaseAuth.getInstance().currentUser
     var signUpResult by mutableStateOf(false)
         private set

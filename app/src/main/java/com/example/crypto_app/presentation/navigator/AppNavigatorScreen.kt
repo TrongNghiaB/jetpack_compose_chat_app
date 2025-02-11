@@ -27,17 +27,12 @@ import com.example.crypto_app.presentation.chat.ChatScreen
 import com.example.crypto_app.presentation.chat.ChatViewModel
 import com.example.crypto_app.presentation.chat.chat_detail.ChatDetailScreen
 import com.example.crypto_app.presentation.chat.chat_detail.ChatDetailViewModel
-import com.example.crypto_app.presentation.details.DetailCoinScreen
-import com.example.crypto_app.presentation.details.DetailCoinViewModel
-import com.example.crypto_app.presentation.home.HomeScreen
-import com.example.crypto_app.presentation.home.HomeViewModel
 import com.example.crypto_app.presentation.navigator.components.NewsBottomNavigation
 import com.example.crypto_app.presentation.nvgraph.Route
 import com.example.crypto_app.presentation.profile.ProfileScreen
 import com.example.crypto_app.presentation.profile.ProfileViewModel
 import com.example.crypto_app.presentation.search.SearchScreen
 import com.example.crypto_app.presentation.search.SearchViewModel
-import com.example.crypto_app.presentation.transaction.TransactionScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -94,7 +89,6 @@ fun AppNavigatorScreen(
         }
     ) {
         val bottomPadding = it.calculateBottomPadding()
-        val homeViewModel: HomeViewModel = hiltViewModel()
         val authViewModel: AuthViewModel = hiltViewModel()
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val chatViewModel: ChatViewModel = hiltViewModel()
@@ -167,37 +161,6 @@ fun AppNavigatorScreen(
                 }
             }
 
-            composable(route = Route.HomeScreen.route) {
-                HomeScreen(
-                    viewModel = homeViewModel,
-                    navigateToDetails = { coinId ->
-                        mainViewModel.navigateToDetails(navController, coinId)
-                    },
-                    navigateToSearch = {
-                        mainViewModel.navigateToTab(
-                            navController,
-                            Route.SearchScreen.route
-                        )
-                    }
-                )
-            }
-
-            composable(route = Route.DetailCoinScreen.route) {
-                val viewModel: DetailCoinViewModel = hiltViewModel()
-                navController
-                    .previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.get<String>("coinId")
-                    ?.let { coinId ->
-                        DetailCoinScreen(
-                            viewModel = viewModel,
-                            homeViewModel = homeViewModel,
-                            coinId = coinId,
-                            onBackClick = { navController.navigateUp() },
-                        )
-                    }
-            }
-
             composable(route = Route.SearchScreen.route) {
                 val viewModel: SearchViewModel = hiltViewModel()
                 SearchScreen(
@@ -212,16 +175,7 @@ fun AppNavigatorScreen(
             composable(route = Route.ProfileScreen.route) {
                 ProfileScreen(authViewModel = authViewModel,
                     profileViewModel = profileViewModel,
-                    navigateToTransaction = {
-                        mainViewModel.navigateToTransaction(navController)
-                    })
-            }
-
-            composable(route = Route.TransactionScreen.route) {
-                TransactionScreen(
-                    profileViewModel = profileViewModel,
-                    onBackClick = { navController.navigateUp() },
-                )
+                    )
             }
 
             composable(route = Route.SignUpScreen.route) {
@@ -262,7 +216,6 @@ fun AppNavigatorScreen(
                                 onBackClick = { navController.navigateUp() })
                         }
                     }
-
             }
         }
     }

@@ -2,18 +2,17 @@ package com.example.crypto_app.domain.repository
 
 import android.content.Context
 import android.net.Uri
-import com.example.crypto_app.domain.model.chat.Attachment
 import com.example.crypto_app.domain.model.chat.ChatChannel
 import com.example.crypto_app.domain.model.chat.Mention
 import com.example.crypto_app.domain.model.chat.Message
-import com.example.crypto_app.domain.model.profile.ChatUser
+import com.example.crypto_app.domain.model.profile.User
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
-    suspend fun searchUser(input: String): List<ChatUser>
-    suspend fun getAllUsers(): List<ChatUser>
+    suspend fun searchUser(input: String): List<User>
+    suspend fun getAllUsers(): List<User>
     suspend fun addNewChatChannel(chatChannel: ChatChannel): Result<Unit>
     suspend fun updateChatChannelName(
         chatChannel: ChatChannel,

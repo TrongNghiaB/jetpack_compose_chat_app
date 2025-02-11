@@ -21,7 +21,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.crypto_app.R
 import com.example.crypto_app.presentation.authentication.AuthState
 import com.example.crypto_app.presentation.authentication.AuthViewModel

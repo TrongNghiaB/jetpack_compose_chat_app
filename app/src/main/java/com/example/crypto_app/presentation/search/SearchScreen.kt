@@ -82,7 +82,7 @@ fun SearchScreen(
                 }
 
                 else -> {
-                    if (state.addedToChatUsersList.isNotEmpty()) {
+                    if (state.addedToUsersList.isNotEmpty()) {
                         ListAddedUserToChat(viewModel = searchViewModel)
                         Spacer(modifier = modifier.height(Padding10))
                         TextButton(
@@ -159,7 +159,7 @@ fun ListAddedUserToChat(modifier: Modifier = Modifier, viewModel: SearchViewMode
             .padding(horizontal = Padding10)
             .horizontalScroll(rememberScrollState()),
     ) {
-        viewModel.state.addedToChatUsersList.forEach { user ->
+        viewModel.state.addedToUsersList.forEach { user ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(
                     contentAlignment = Alignment.Center,

@@ -15,7 +15,7 @@ import com.example.crypto_app.domain.model.chat.Attachment
 import com.example.crypto_app.domain.model.chat.ChatChannel
 import com.example.crypto_app.domain.model.chat.Mention
 import com.example.crypto_app.domain.model.chat.Message
-import com.example.crypto_app.domain.model.profile.ChatUser
+import com.example.crypto_app.domain.model.profile.User
 import com.example.crypto_app.domain.repository.ChatRepository
 import com.example.crypto_app.util.DateUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +35,7 @@ class ChatRepositoryImpl : ChatRepository {
     private val firestoreInstance = FirebaseFirestore.getInstance()
     private val userCollection = firestoreInstance.collection("users")
     private val chatChannelCollection = firestoreInstance.collection("ChatChannels")
-    override suspend fun searchUser(input: String): List<ChatUser> {
+    override suspend fun searchUser(input: String): List<User> {
         if (input.trim().isEmpty()) return emptyList()
         try {
             val result = userCollection
@@ -52,7 +52,7 @@ class ChatRepositoryImpl : ChatRepository {
         }
     }
 
-    override suspend fun getAllUsers(): List<ChatUser> {
+    override suspend fun getAllUsers(): List<User> {
         try {
             val result = userCollection
                 .get()
